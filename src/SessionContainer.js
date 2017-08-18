@@ -1,12 +1,10 @@
 import React from 'react';
 
 import { Redirect, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 
-const SessionContainer = ({ children, location }) => {
-  // Setting user manually. In the real app, we use redux.
-  const user = false;
-
+const SessionContainer = ({ children, user, location }) => {
   if (!user) {
     const childrenWithProps = React.Children.map(children,
       child => React.cloneElement(child, {
@@ -33,4 +31,12 @@ const SessionContainer = ({ children, location }) => {
 };
 
 
-export default withRouter(SessionContainer);
+const mapStateToProps = (state) => {
+  const { user } = state.session;
+
+  return {
+    user
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(SessionContainer));
